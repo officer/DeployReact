@@ -1,9 +1,13 @@
-﻿var async = require('async');
+﻿// Initialize clients
+var async = require('async');
 var AWS = require('aws-sdk');
-var s3_client = AWS.S3();
+var s3_client = AWS.S3({
+    region:     process.env.REGION,
+    maxRetries: process.env.MAX_RETRIES
+});
 
-var DESTINATION_BUCKET = "";
 
+// Mime-type dictionary
 MIME_TYPE = {
     "htm": "text/html",
     "html": "text/html",
@@ -72,7 +76,7 @@ function moveObject(bucket, key, callback, next) {
             var contentType = decideMimeType(key);
 
             var puttObjectParam = {
-                Bucket: DESTINATION_BUCKET,
+                Bucket: process.env.DESTINATION_BUCKET,
                 Key: key,
                 Body: data.Body,
                 ContentEncoding: "gzip",
