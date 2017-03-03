@@ -1,7 +1,7 @@
 ﻿// Initialize clients
 var async = require('async');
 var AWS = require('aws-sdk');
-var s3_client = AWS.S3({
+var s3_client = new AWS.S3({
     region:     process.env.REGION,
     maxRetries: process.env.MAX_RETRIES
 });
@@ -104,8 +104,8 @@ function decideMimeType(key) {
     var filename = splitedKey[splitedKey.length - 1];
 
     var splitedString = filename.split(".");
-    if (!splitedString[splitedString.length - 1] && !MIME_TYPE[splitedString[splitedString.length - 1]]) {
-        return MIME_TYPE[splitedString[splitedString.length - 1]];
+    if (!splitedString[splitedString.length - 2] && !MIME_TYPE[splitedString[splitedString.length - 2]]) {
+        return MIME_TYPE[splitedString[splitedString.length - 2]];
     } else {
         return null;
     }
