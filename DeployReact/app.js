@@ -73,7 +73,7 @@ function moveObject(bucket, key, callback, next) {
 
     var extention = getExtention(key);
 
-    if (extention == "map") next(null, "pass :" + key);
+    if (extention == "map" && process.env.PRODUCTION_BUCKET == "bucket") next(null, "pass :" + key);
 
     s3_client.getObject(getObjectParam, function (err, data) {
         if (err) {
@@ -136,7 +136,8 @@ function getExtention(key) {
     var filename = splitedKey[splitedKey.length - 1];
 
     var splitedString = filename.split(".");
-    return splitedString[splitedString.length - 2];
+    var extention = (splitedString[splitedString.length - 2] == "map") ? splitedString[splitedString.length - 3] : splitedString[splitedString.length - 2];
+    return extention;
 };
 
 
